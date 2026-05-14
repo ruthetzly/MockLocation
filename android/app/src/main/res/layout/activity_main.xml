@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#1a1a2e">
+
+    <!-- 主界面 -->
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <!-- 标题栏 -->
+            <LinearLayout
+                android:id="@+id/title_bar"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:background="#16213e"
+                android:gravity="center"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="🐉 大龙虚拟定位"
+                    android:textColor="#e94560"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <!-- 地图 -->
+            <org.osmdroid.views.MapView
+                android:id="@+id/map_view"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="50dp"
+                app:layout_constraintBottom_toTopOf="@id/control_panel"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <!-- 控制面板 -->
+            <ScrollView
+                android:id="@+id/control_panel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="#16213e"
+                android:maxHeight="400dp"
+                android:padding="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <!-- 搜索地点 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:orientation="horizontal">
+
+                        <EditText
+                            android:id="@+id/et_search_place"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@drawable/edit_bg"
+                            android:hint="搜索地点（北京、上海...）"
+                            android:padding="4dp"
+                            android:textColor="#fff"
+                            android:textColorHint="#666"
+                            android:textSize="12sp" />
+
+                        <Button
+                            android:id="@+id/btn_search"
+                            android:layout_width="60dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="4dp"
+                            android:backgroundTint="#2196F3"
+                            android:text="搜索"
+                            android:textColor="#fff"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <!-- 坐标输入 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="36dp"
+                        android:layout_marginTop="4dp"
+                        android:orientation="horizontal">
+
+                        <EditText
+                            android:id="@+id/et_latitude"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@drawable/edit_bg"
+                            android:digits="0123456789.-"
+                            android:hint="纬度"
+                            android:padding="4dp"
+                            android:textColor="#fff"
+                            android:textColorHint="#666"
+                            android:textSize="12sp" />
+
+                        <EditText
+                            android:id="@+id/et_longitude"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="4dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/edit_bg"
+                            android:digits="0123456789.-"
+                            android:hint="经度"
+                            android:padding="4dp"
+                            android:textColor="#fff"
+                            android:textColorHint="#666"
+                            android:textSize="12sp" />
+
+                        <Button
+                            android:id="@+id/btn_set_location"
+                            android:layout_width="70dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="4dp"
+                            android:backgroundTint="#4CAF50"
+                            android:text="定位"
+                            android:textColor="#fff"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+
+                    <!-- 快捷按钮行 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="36dp"
+                        android:layout_marginTop="4dp"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/btn_current_location"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:backgroundTint="#FF9800"
+                            android:text="📍 武汉"
+                            android:textColor="#fff"
+                            android:textSize="11sp" />
+
+                        <Button
+                            android:id="@+id/btn_save_location"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="4dp"
+                            android:layout_weight="1"
+                            android:backgroundTint="#9C27B0"
+                            android:text="💾 保存"
+                            android:textColor="#fff"
+                            android:textSize="11sp" />
+
+                        <Button
+                            android:id="@+id/btn_saved_locations"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="4dp"
+                            android:layout_weight="1"
+                            android:backgroundTint="#607D8B"
+                            android:text="📋 收藏"
+                            android:textColor="#fff"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+
+                    <!-- 开关 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="36dp"
+                        android:layout_marginTop="4dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.switchmaterial.SwitchMaterial
+                            android:id="@+id/switch_mocking"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="启用虚拟定位"
+                            android:textColor="#fff"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/tv_status"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="end"
+                            android:text="就绪"
+                            android:textColor="#2196F3"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+
+                    <!-- 保存的位置列表 -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="已保存位置（长按删除）"
+                        android:textColor="#888"
+                        android:textSize="10sp" />
+
+                    <ListView
+                        android:id="@+id/lv_saved_locations"
+                        android:layout_width="match_parent"
+                        android:layout_height="80dp"
+                        android:background="#0d1b3e"
+                        android:divider="#333"
+                        android:dividerHeight="1dp" />
+
+                    <!-- 使用说明 -->
+                    <TextView
+                        android:id="@+id/tv_instructions"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:padding="4dp"
+                        android:text="💡 使用说明：\n1. 在开发者选项中开启「选择模拟位置信息应用」\n2. 选择「大龙虚拟定位」\n3. 在地图上长按选择位置或搜索地点\n4. 开启虚拟定位开关 → 点击定位\n5. 打开微信/美团等APP即可看到虚拟位置\n\n⚠️ 部分APP有反虚拟定位检测"
+                        android:textColor="#666"
+                        android:textSize="9sp" />
+
+                </LinearLayout>
+            </ScrollView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</androidx.drawerlayout.widget.DrawerLayout>
