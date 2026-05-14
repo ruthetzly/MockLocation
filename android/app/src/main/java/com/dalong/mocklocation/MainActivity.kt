@@ -94,12 +94,13 @@ class MainActivity : AppCompatActivity() {
         mapView.controller.setCenter(GeoPoint(selectedLat, selectedLng))
 
         // 地图点击选择位置
-        mapView.setOnLongClickListener(object : MapView.OnLongClickListener {
-            override fun onLongClick(p: GeoPoint?): Boolean {
-                if (p != null) updateSelectedLocation(p.latitude, p.longitude)
-                return true
+        mapView.setOnTouchListener { _, event ->
+            if (event.action == android.view.MotionEvent.ACTION_UP) {
+                val p = mapView.projection.fromPixels(event.x.toInt(), event.y.toInt())
+                updateSelectedLocation(p.latitude, p.longitude)
             }
-        })
+            false
+        }
 
         // 坐标输入
         etLatitude.setText(selectedLat.toString())
