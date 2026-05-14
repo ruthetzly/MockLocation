@@ -94,10 +94,12 @@ class MainActivity : AppCompatActivity() {
         mapView.controller.setCenter(GeoPoint(selectedLat, selectedLng))
 
         // 地图点击选择位置
-        mapView.setOnLongClickListener { _, p ->
-            updateSelectedLocation(p.latitude, p.longitude)
-            true
-        }
+        mapView.setOnLongClickListener(object : MapView.OnLongClickListener {
+            override fun onLongClick(p: GeoPoint?): Boolean {
+                if (p != null) updateSelectedLocation(p.latitude, p.longitude)
+                return true
+            }
+        })
 
         // 坐标输入
         etLatitude.setText(selectedLat.toString())
@@ -179,10 +181,12 @@ class MainActivity : AppCompatActivity() {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             // Android 6+ 使用"选择模拟位置应用"
-            val mockApp = Settings.Global.getString(
+            // Android 6+ 使用模拟位置应用选择
+            @Suppress("DEPRECATION")
+            val mockEnabled = Settings.Secure.getInt(
                 contentResolver,
-                Settings.Global.ALLOW_MOCK_LOCATION  // 旧API
-            )
+                Settings.Secure.ALLOW_MOCK_LOCATION, 0
+            ) == 1
             
             // 实际上在Android 6+上，需要开发者选项中设置
             // 提示用户去设置
@@ -298,7 +302,18 @@ class MainActivity : AppCompatActivity() {
 
         // 精度圈
         accuracyCircle = Polygon(mapView).apply {
-            setPoints(Polygon.polygonAsCircle(point, 100.0))
+            val circlePoints = mutableListOf<GeoPoint>()
+            val radius = 100.0
+            for (i in 0 until 360 step 10) {
+                val rad = Math.toRadians(i.toDouble())
+                val latOffset = radius / 111320.0
+                val lngOffset = radius / (111320.0 * Math.cos(Math.toRadians(selectedLat)))
+                circlePoints.add(GeoPoint(
+                    selectedLat + latOffset * Math.sin(rad),
+                    selectedLng + lngOffset * Math.cos(rad)
+                ))
+            }
+            setPoints(circlePoints)
             fillColor = 0x220000FF.toInt()
             strokeColor = 0xFF0000FF.toInt()
             strokeWidth = 2.0f
@@ -326,7 +341,8 @@ class MainActivity : AppCompatActivity() {
                 val body = response.body?.string()
                 
                 if (body != null) {
-                    val results = com.google.gson.Gson().fromJson(body, Array<Map<String, Any>>::class.java)
+                    val type = object : com.google.gson.reflect.TypeToken<List<Map<String, Any>>>() {}.type
+                    val results: List<Map<String, Any>> = com.google.gson.Gson().fromJson(body, type)
                     if (results.isEmpty()) {
                         runOnUiThread {
                             tvStatus.text = "❌ 未找到地点"
